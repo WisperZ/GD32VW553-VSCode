@@ -1,0 +1,95 @@
+# VW553 VSCode项目
+
+## 简介
+
+VW553 VSCode 使用 CMake + Ninja 进行构建和管理。
+
+## 环境依赖
+
+ - Windows 10 或以上
+ - CMake 3.15 及以上版本
+ - Ninja 构建工具
+ - RISC-V Nuclei 工具链 (版本 10.2.0 推荐)
+ - VSCode 编辑器（可选）
+
+## 项目结构
+
+```
+VW553/
+├── App/                  # 应用代码
+├── Firmware/             # 固件库和驱动
+│   ├── GD32VW55x_standard_peripheral/
+│   └── RISCV/
+├── LinkScript/           # 链接脚本
+├── ToolChain/            # RISC-V 工具链
+├── Script/               # 图片调试脚本
+├── CMakeLists.txt        # CMake 构建脚本
+└── README.md             # 项目说明
+
+```
+
+## CMake 相关说明
+
+- 工具链路径请根据实际情况修改 CMakeLists.txt 中的 ToolChain/gcc/bin 路径。[工具链下载路径](xxx)
+- 默认编译参数适用于 GD32VW55x 系列 RISC-V 芯片。
+- 编译后的文件统一输出到 build/out 目录。
+
+## 安装依赖工具（Windows）
+
+安装 CMake 和 Ninja
+建议使用管理员权限安装：
+
+[CMake 官网下载](https://cmake.org/download/)
+[Ninja 官方发布页](https://github.com/ninja-build/ninja/releases)
+
+✅ 方式一：使用 Scoop（推荐，干净不污染系统）
+安装 Scoop（如果你还没装）：
+打开 PowerShell（管理员权限）并运行：
+
+```powershell
+Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+iwr -useb get.scoop.sh | iex
+```
+安装 CMake 和 Ninja：
+```powershell
+scoop install cmake ninja
+```
+✅ 方式二：使用 Chocolatey（如果你习惯用它）
+安装 Chocolatey（仅第一次用需要）：
+打开 管理员模式的 PowerShell 并运行：
+
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+```
+
+```powershell
+choco install cmake ninja -y
+```
+✅ 验证是否安装成功：
+打开 PowerShell 或 CMD，执行：
+
+```sh
+cmake --version
+ninja --version
+```
+如果能看到版本号说明安装成功。
+
+## 快速开始
+
+1. 克隆仓库到本地：
+    ```bash
+    git clone xxx
+    cd VW553
+    ```
+
+2. 创建构建目录并编译：
+    ```bash
+    cmake -B build -S . -G Ninja
+    cmake --build build
+    ```
+
+3. 编译完成后，生成的文件会放在 build/out 目录下，包括 .hex, .bin, .lst, .size 等文件。
+
+4. 烧录,使用GD提供的`GD32AllInOneProgrammer.exe`烧录工具进行烧录
